@@ -2,6 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\CustomAuthController;
+use \App\Http\Controllers\Admin\DashboardController;
+use \App\Http\Controllers\Admin\AgentController;
+use \App\Http\Controllers\Admin\ProjectController;
+use \App\Http\Controllers\Admin\SalesController;
+use \App\Http\Controllers\Admin\PropertyController;
+use \App\Http\Controllers\Admin\IncentiveController;
+use \App\Http\Controllers\Admin\CollectionController;
+use \App\Http\Controllers\Admin\CommissionController;
+use \App\Http\Controllers\Admin\LeaderboardController;
+
+
 
 
 // Custom login/register
