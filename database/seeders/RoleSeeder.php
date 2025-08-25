@@ -11,24 +11,43 @@ class RoleSeeder extends Seeder
 {
     public function run(): void
     {
-        // Create roles first
-        $adminRole = Role::firstOrCreate(['name' => 'admin']);
-        $agentRole = Role::firstOrCreate(['name' => 'agent']);
+        // ✅ Ensure roles exist with correct guard
+        $roles = [
+            'admin' => 'Admin',
+            'agent' => 'Agent',
+        ];
 
-        // Create admin user and assign role
-        $admin = User::create([
-            'name' => 'Admin',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('password'),
-        ]);
-        $admin->assignRole($adminRole);
+        foreach ($roles as $roleName => $displayName) {
+            Role::firstOrCreate([
+                'name' => $roleName,
+                'guard_name' => 'web', // must match your auth guard
+            ]);
+        }
 
-        // Create agent user and assign role
-        $agent = User::create([
-            'name' => 'Agent One',
-            'email' => 'agent@example.com',
-            'password' => Hash::make('password'),
-        ]);
-        $agent->assignRole($agentRole);
+        // ✅ Ensure admin user exists and assign role
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'Admin',
+                'password' => Hash::make('password'),
+            ]
+        );
+
+        if (!$admin->hasRole('admin')) {
+            $admin->assignRole('admin'); // assign by name, not object
+        }
+
+        // ✅ Ensure agent user exists and assign role
+        $agent = User::firstOrCreate(
+            ['email' => 'agent@example.com'],
+            [
+                'name' => 'Agent One',
+                'password' => Hash::make('password'),
+            ]
+        );
+
+        if (!$agent->hasRole('agent')) {
+            $agent->assignRole('agent');
+        }
     }
 }

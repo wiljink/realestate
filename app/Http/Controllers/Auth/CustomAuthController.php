@@ -20,17 +20,20 @@ class CustomAuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-
-            if ($user->roles === 'admin') {
+            //dd(Auth::user());
+            if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
+            } elseif ($user->role === 'agent') {
+                return redirect()->route('agent.dashboard');
+            } else {
+                Auth::logout();
+                return redirect()->route('custom.login')->with('error', 'Unauthorized role.');
             }
-
-            // If NOT admin, redirect to agent dashboard
-            return redirect()->route('agent.dashboard');
         }
 
-        return back()->with('error', 'Invalid credentials.');
+        return back()->with('error', 'Invalid credentials. Please try again.');
     }
+
 
 
 
@@ -49,7 +52,7 @@ class CustomAuthController extends Controller
         ]);
 
         // Assign "agent" role by default
-        $user->assignRole('agent');
+        $user->assignRole('admin');
 
         Auth::login($user);
         return redirect()->back()->with('success', 'Agent registered successfully! You can now log in.');
@@ -58,6 +61,6 @@ class CustomAuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('custom.logout');
+        return redirect()->route('custom.login');
     }
 }
