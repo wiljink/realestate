@@ -52,12 +52,12 @@ class CustomAuthController extends Controller
         $user->assignRole('agent');
 
         Auth::login($user);
-        return redirect()->route('agent.dashboard');
+        return redirect()->back()->with('success', 'Agent registered successfully! You can now log in.');
     }
 
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('custom.login');
+        return redirect()->route('custom.logout');
     }
 }

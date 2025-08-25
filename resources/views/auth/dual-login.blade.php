@@ -268,6 +268,12 @@
 
 <div class="container" id="container">
     <!-- Agent Registration -->
+    @if (session('success'))
+        <p style="color: green; font-weight: bold; text-align: center;">
+            {{ session('success') }}
+        </p>
+    @endif
+
     <div class="form-container sign-up-container">
         <form method="POST" action="{{ route('custom.register') }}">
             @csrf
